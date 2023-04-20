@@ -73,6 +73,11 @@ $(document).ready(function(){ /* $(funcion(){ //Método abreviado.Hace lo mismo 
     });
   
 
+    $("#portada").click(function(){
+       
+        let autor=document.getElementById("autor");
+        autor.innerHTML='<a target=".new" href="https://www.flickr.com/photos/144594988@N02/38516424674">flickr</a>'; 
+    })
     // ****************** F U N C I O N E S ****************** 
 
     function reducePortada(){
@@ -137,6 +142,20 @@ $(document).ready(function(){ /* $(funcion(){ //Método abreviado.Hace lo mismo 
         }
     }
 
+    //Coloca los coches en la línea de salida
+    function muestraParticipantes(carList){
+        //asigna a pista el  div id=pista
+        const pista=document.getElementById("pista");
+        //inserta el código HTML de img y sus coches
+        pista.innerHTML="";
+        for (let i=0;i<carList.length;i++){
+            pista.innerHTML+=`<img class="car" id="${i}" src=${carList[i]} alt="">`; 
+        }
+        pista.innerHTML+="</div>"
+        
+        // Variable global que tiene el array de los coches
+        cars =  document.getElementsByClassName("car");
+    }
     function updateParticipantes(){
         //Cuando se actualiza el valor se llama a esta función que
         //recupera el nuevo valor y genera un nuevo array 
@@ -152,20 +171,6 @@ $(document).ready(function(){ /* $(funcion(){ //Método abreviado.Hace lo mismo 
         
     }
     
-    //Coloca los coches en la línea de salida
-    function muestraParticipantes(carList){
-        //asigna a pista el  div id=pista
-        const pista=document.getElementById("pista");
-        //inserta el código HTML de img y sus coches
-        pista.innerHTML="";
-        for (let i=0;i<carList.length;i++){
-            pista.innerHTML+=`<img class="car" id="${i}" src=${carList[i]} alt="">`; 
-        }
-        pista.innerHTML+="</div>"
-        
-        // Variable global que tiene el array de los coches
-        cars =  document.getElementsByClassName("car");
-    }
  
 
     function crearYMostrarTablaClasificacion() {

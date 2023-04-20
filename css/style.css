@@ -15,8 +15,6 @@
     width: 100%;
 }
 
-
-
 #pista{
     display: block;
     height: 440px;
@@ -35,17 +33,13 @@
 .row{
     position: relative;
     display: flex;
-    /* flex-wrap: wrap; */
-
 }
+
 aside{
     flex: 25%;
     height: 510px;
     background-color:var(--color-primary);
-    /* justify-content: center;
-    flex-direction: row; */
 }
-
 
 .main{
     flex:75%;
@@ -53,7 +47,6 @@ aside{
     background-color: var(--color-primary);
     font-size: 50px; 
     text-indent: 50px;
-
 }
 
 option, select, #clasificacion, h3{

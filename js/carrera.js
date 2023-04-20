@@ -8,54 +8,45 @@ $(document).ready(function(){ /* $(funcion(){ //Método abreviado.Hace lo mismo 
     var windowHeight=window.screen.availHeight;//1032
     var windowWidht=window.screen.availWidth;//1920 */
     
-    //Cuando carga la página reduce la portada al vertice superior izquierdo en 5 seg.
-    window.addEventListener("load", reducePortada);
     
     //Carga la función principal
     start();
+       
+    
+    /* E V E N T O S */
+    //Cuando carga la página reduce la portada al vertice superior izquierdo en 5 seg.
+    window.addEventListener("load", reducePortada); //TODO desactivamos mientras escribos código
+
+    function reducePortada(){
+        $("#portada").animate({ left: '0px',  
+        height: '25%',
+        width: '25%'}, 5000);
+    }
     
  
-
-
-    //Configura la presentación de los botones
-    /* $("#iniciar").show(); */
-    $("#reiniciar").hide();
-    $("#parar").hide();
-
-    /* E V E N T O S */
-    // Click 
-$("#portada").click(reducePortada);
-
-    
-function reducePortada(){
-    $("#portada").animate({ left: '0px',
-    
-    height: '25%',
-    width: '25%'}, 5000);
-}
-    
-    
     
     // Botón Iniciar
     $("#iniciar").click(function(){
-       
-          
+        //Actualiza los botones que se han de mostrar
         $("#iniciar").hide();
         $("#reiniciar").show();
         $("#parar").show();
 
         //Establece aleatoriamente los tiempos de llegada  para cada participante
-        for (let i=0;i<cars.length;i++){
+        //Los anima a partir del método animate
+        for (let i=0;i<cars.length;i++){    //cars[].length variable Global devuelve el número de participantes
+            //2 variables locales recogen el id del elemento html y el tiempo de desplazamiento
             let ident=`#${i}`;
             let time=(Math.random(1)+1)*1000;
             $(ident).animate({"left":"1000px"},time);
-            //guardamos en un array los tiempos para cada participante
-            times[i]=time;
-            console.log(time+" erqwre");
+            
+            //guardamos en un array Global los tiempos para cada participante
+            times[i]=time;         
         }
+
         //Para establecer la posición de cada participante...
         //contamos cuantas  veces hay un tiempo mejor que el propio
-        //si es 0 es el primero, si hay  1 es el segundo
+        //si es 0 es el primero, si hay  1 es el segundo, etc
         let lose=0;
         let posicion=[];
         for (let i=0;i<cars.length;i++){
@@ -63,33 +54,35 @@ function reducePortada(){
             for (let j=0;j<cars.length;j++){
                 if (times[j]<times[i])  lose++;
             }
-            console.log(lose);
             posicion[i]=lose;
         }
 
 
         //Mostrar posiciones
-        console.log("Posición es: "+posicion.length);
-        generateTable(posicion); //prueba de generar tabla
+        //Le pasamos el array de las posiciones
+        generateTable(posicion);
 
 
-
+        
     }); 
-
+    
     // Botón Parar
     $( "#parar" ).click(function() {
+        //Detiene las animaciones jQuery animate
         $( ".car" ).stop();
-
+        
+        //Actualiza los estados de los botones
         $("#iniciar").show();
         $("#reiniciar").show();
         $("#parar").hide();
-
     });
 
     // Botón Reiniciar
     $( "#reiniciar" ).click(function() {
+        //Animación animate para retroceder los coches
         $( ".car" ).animate({ left: "0px" }, 3000 );
 
+        //Actualiza el estado de los botones
         $("#iniciar").show();
         $("#reiniciar").hide();
         $("#parar").hide();
@@ -100,13 +93,22 @@ function reducePortada(){
 
 
   
-    function start(){
+    function start(){     
+    //Configura la presentación de los botones   
         $("#iniciar").show();
+        $("#reiniciar").hide();
+        $("#parar").hide();
         
+        //Recupera el valor de participantes informado en el select
         carList=updateParticipantes();
         muestraParticipantes(carList);
         
     }
+
+
+
+
+
     
     function reStart(){
         alert("Restat pressed");
@@ -120,8 +122,7 @@ function reducePortada(){
       
         //Inicializamos el array
         for (let i=0; i<numberElements;i++){
-            carList[i]=`img/car${i+1}.png`;
-        
+            carList[i]=`img/car${i+1}.png`;  
         }
         return carList;
     }
@@ -141,17 +142,17 @@ function reducePortada(){
         
     }
     
-    
+    //Coloca los coches en la línea de salida
     function muestraParticipantes(carList){
+        //asigna a pista el  div id=pista
         const pista=document.getElementById("pista");
-        console.log("Dentro de muestraParticipantes " + carList.length);
+        //inserta el código HTML de img y sus coches
         pista.innerHTML="";
         for (let i=0;i<carList.length;i++){
-            
             pista.innerHTML+=`<img class="car" id="${i}" src=${carList[i]} alt="">`; 
         }
         pista.innerHTML+="</div>"
-        console.log(pista.innerHTML);
+        
         
        cars =  document.getElementsByClassName("car");
    

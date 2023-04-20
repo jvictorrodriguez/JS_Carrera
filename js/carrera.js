@@ -12,61 +12,43 @@ $(document).ready(function(){ /* $(funcion(){ //Método abreviado.Hace lo mismo 
     //Carga la función principal
     start();
        
+    /************************************************************************************
+     *                                   E V E N T O S
+     ************************************************************************************/
     
-    /* E V E N T O S */
+    //**************  L O A D*************
     //Cuando carga la página reduce la portada al vertice superior izquierdo en 5 seg.
-    //window.addEventListener("load", reducePortada); //TODO desactivamos mientras escribos código
-
-    function reducePortada(){
-        $("#portada").animate({ left: '0px',  
-        height: '25%',
-        width: '25%'}, 5000);
-    }
+    window.addEventListener("load", reducePortada); //TODO desactivamos mientras escribos código
     
+    //**************  C H A N G E *************
+    //Se dispara cuando se cambia el valor de los participantes
+    $("#participantes").change(function(){
+        carList=updateParticipantes();
+        muestraParticipantes(carList);
+    });
+  
  
     
-    // Botón Iniciar
+    // ********** B  O  T  O  N  E  S *********************
+
+    // B O T Ó N   I N I C I A R 
     $("#iniciar").click(function(){
         //Actualiza los botones que se han de mostrar
         $("#iniciar").hide();
         $("#reiniciar").show();
         $("#parar").show();
 
-        //Establece aleatoriamente los tiempos de llegada  para cada participante
-        //Los anima a partir del método animate
-        for (let i=0;i<cars.length;i++){    //cars[].length variable Global devuelve el número de participantes
-            //2 variables locales recogen el id del elemento html y el tiempo de desplazamiento
-            let ident=`#${i}`;
-            let time=(Math.random(1)+1)*1000;
-            $(ident).animate({"left":"1000px"},time);
-            
-            //guardamos en un array Global los tiempos para cada participante
-            times[i]=time;         
-        }
-
-        //Para establecer la posición de cada participante...
-        //contamos cuantas  veces hay un tiempo mejor que el propio
-        //si es 0 es el primero, si hay  1 es el segundo, etc
-        let lose=0;
-        let posicion=[];
-        for (let i=0;i<cars.length;i++){
-            lose=0;
-            for (let j=0;j<cars.length;j++){
-                if (times[j]<times[i])  lose++;
-            }
-            posicion[i]=lose;
-        }
-
-
-        //Mostrar posiciones
-        //Le pasamos el array de las posiciones
-        generateTable(posicion);
-
-
+        generaTiemposCorredores();
         
+        generaPodio();
+        
+        //Mostrar posiciones
+        crearYMostrarTablaClasificacion();        
     }); 
     
-    // Botón Parar
+
+
+    // B O T Ó N   P A R A R
     $( "#parar" ).click(function() {
         //Detiene las animaciones jQuery animate
         $( ".car" ).stop();
@@ -76,8 +58,9 @@ $(document).ready(function(){ /* $(funcion(){ //Método abreviado.Hace lo mismo 
         $("#reiniciar").show();
         $("#parar").hide();
     });
-
-    // Botón Reiniciar
+    
+  
+    // B O T Ó N   R E I N I C I A R
     $( "#reiniciar" ).click(function() {
         //Animación animate para retroceder los coches
         $( ".car" ).animate({ left: "0px" }, 3000 );
@@ -90,9 +73,14 @@ $(document).ready(function(){ /* $(funcion(){ //Método abreviado.Hace lo mismo 
     });
   
 
+    // ****************** F U N C I O N E S ****************** 
 
+    function reducePortada(){
+        $("#portada").animate({ left: '0px',  
+        height: '25%',
+        width: '25%'}, 5000);
+    }
 
-  
     function start(){     
     //Configura la presentación de los botones   
         $("#iniciar").show();
@@ -101,21 +89,15 @@ $(document).ready(function(){ /* $(funcion(){ //Método abreviado.Hace lo mismo 
         
         //Recupera el valor de participantes informado en el select
         carList=updateParticipantes();
+        //pasa el valor recuperado para alinear en la línea de salida a los coches
         muestraParticipantes(carList);
-        
     }
-
-
-
-
-
     
     function reStart(){
-        alert("Restat pressed");
         $("#iniciar").show();
-     /*    $("#reiniciar").hide(); */
         $(".car").animate({"left":"0px"},2000);
     }
+
     function crearArray(numberElements){
         //Declaramos el array    
         carList=[];
@@ -127,6 +109,34 @@ $(document).ready(function(){ /* $(funcion(){ //Método abreviado.Hace lo mismo 
         return carList;
     }
     
+    function generaTiemposCorredores(){
+        //Establece aleatoriamente los tiempos de llegada  para cada participante
+        //Los anima a partir del método animate
+        for (let i=0;i<cars.length;i++){    //cars[].length variable Global devuelve el número de participantes
+            //2 variables locales recogen el id del elemento html y el tiempo de desplazamiento
+            let ident=`#${i}`;
+            let time=(Math.random(1)+1)*1000;
+            $(ident).animate({"left":"1000px"},time);
+            
+            //guardamos en un array Global los tiempos para cada participante
+            times[i]=time;         
+        }
+    }
+
+    function generaPodio(){    
+        //Para establecer la posición de cada participante...
+        //contamos cuantas  veces hay un tiempo mejor que el propio
+        //si es 0 es el primero, si hay  1 es el segundo, etc
+        let lose=0;
+        for (let i=0;i<cars.length;i++){
+            lose=0;
+            for (let j=0;j<cars.length;j++){
+                if (times[j]<times[i])  lose++;
+            }
+            posicion[i]=lose;
+        }
+    }
+
     function updateParticipantes(){
         //Cuando se actualiza el valor se llama a esta función que
         //recupera el nuevo valor y genera un nuevo array 
@@ -153,49 +163,27 @@ $(document).ready(function(){ /* $(funcion(){ //Método abreviado.Hace lo mismo 
         }
         pista.innerHTML+="</div>"
         
-        
-       cars =  document.getElementsByClassName("car");
-   
-   }
+        // Variable global que tiene el array de los coches
+        cars =  document.getElementsByClassName("car");
+    }
  
-      
-    $("#iniciar").click(function(){
-      /*   start(); */
-    });
+
+    function crearYMostrarTablaClasificacion() {
+        //https://developer.mozilla.org/es/docs/Web/API/Document_Object_Model/Traversing_an_HTML_table_with_JavaScript_and_DOM_Interfaces
         
-    $("#reiniciar").click(function(){
-        reStart();
-    });
-        
-    
-
-
-
-//Se dispara cuando se cambia el valor de los participantes
-    $("#participantes").change(function(){
-    carList=updateParticipantes();
-    muestraParticipantes(carList);
-    });
-
-
-    //https://developer.mozilla.org/es/docs/Web/API/Document_Object_Model/Traversing_an_HTML_table_with_JavaScript_and_DOM_Interfaces
-    function generateTable(posiciones) {
         // creates a <table> element and a <tbody> element
-  
         const tbl = document.createElement("table");
         const tblBody = document.createElement("tbody");
               
-        tbl.classList.add("row"); //todo
+        /* tbl.classList.add("row"); //todo */
         
         //Creating the headers
-        
         const row = document.createElement("tr");
         const header = document.createElement("th");
         const headerText = document.createTextNode("Corredor");
         header.appendChild(headerText);
         row.appendChild(header);
         tblBody.appendChild(row);
-        
         
         const headerb = document.createElement("th");
         const headerTextb = document.createTextNode("Posición");
@@ -204,14 +192,11 @@ $(document).ready(function(){ /* $(funcion(){ //Método abreviado.Hace lo mismo 
         tblBody.appendChild(row);
 
         
-        
-
         // creating all cells
 
-        for (let i = 0; i < posiciones.length; i++) {
+        for (let i = 0; i < posicion.length; i++) {
           // creates a table row
-          const row = document.createElement("tr");
-          
+          const row = document.createElement("tr");  
           
           // Create a <td> element and a text node, make the text
           // node the contents of the <td>, and put the <td> at
@@ -223,14 +208,11 @@ $(document).ready(function(){ /* $(funcion(){ //Método abreviado.Hace lo mismo 
           row.appendChild(cell);
           
           cell = document.createElement("td");
-          cellText = document.createTextNode(`${posiciones[i]+1}º` );
+          cellText = document.createTextNode(`${posicion[i]+1}º` );
           
           cell.appendChild(cellText);
           row.appendChild(cell);
-          
- 
-          
-      
+        
           // add the row to the end of the table body
           tblBody.appendChild(row);
         }
@@ -240,13 +222,8 @@ $(document).ready(function(){ /* $(funcion(){ //Método abreviado.Hace lo mismo 
         // appends <table> into <body>
         /* document.body.appendChild(tbl); */
         
-    
        //Añadimos al elemento tabla con id="clasificación" los resultados de la carrera
         var elementoTabla= document.getElementById("clasificacion");
-        elementoTabla.innerHTML=  tbl.innerHTML;
-       
+        elementoTabla.innerHTML=  tbl.innerHTML;  
     }
-
-
-
 });

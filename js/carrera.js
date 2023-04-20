@@ -15,7 +15,7 @@ $(document).ready(function(){ /* $(funcion(){ //Método abreviado.Hace lo mismo 
     
     /* E V E N T O S */
     //Cuando carga la página reduce la portada al vertice superior izquierdo en 5 seg.
-    window.addEventListener("load", reducePortada); //TODO desactivamos mientras escribos código
+    //window.addEventListener("load", reducePortada); //TODO desactivamos mientras escribos código
 
     function reducePortada(){
         $("#portada").animate({ left: '0px',  

@@ -1,0 +1,80 @@
+@import "colors.css";
+@import "portada.css";
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: var(--color-secondary);
+}
+
+.container{
+    position: absoluta;
+    background-image: linear-gradient(var(--color-secondary),var(--color-primary));
+    width: 100%;
+}
+
+
+
+#pista{
+    display: block;
+    height: 440px;
+    width: 1000px;
+    background: var(--color-pista);
+    border-right: 10px solid var(--color-goal);
+ 
+}
+.car{
+    position: relative;
+    width: 100px;
+    display: flex;
+    flex-direction: column;
+}
+
+.row{
+    position: relative;
+    display: flex;
+    /* flex-wrap: wrap; */
+
+}
+aside{
+    flex: 25%;
+    height: 510px;
+    background-color:var(--color-primary);
+    /* justify-content: center;
+    flex-direction: row; */
+}
+
+
+.main{
+    flex:75%;
+    height: 510px;
+    background-color: var(--color-primary);
+    font-size: 50px; 
+    text-indent: 50px;
+
+}
+
+option, select, #clasificacion, h3{
+    font-size: 30px;
+    text-align: center;
+}
+
+table, th, td{
+    margin: auto;
+    border:2px solid;
+    border-radius: 15px;
+    width: 300px;
+    text-align: center;
+    font-size: 20px;
+   
+}
+
+button{
+    font-size: xx-large;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 15px;
+    color: var(--color-secondary);
+}
